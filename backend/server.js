@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
   res.send('¡Hola desde el API conectado a MongoDB!');
 });
 
+// después de tus otras rutas
+const noticiasRoutes = require('./routes/noticias');
+app.use('/api/noticias', noticiasRoutes);
+
+
 // Servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend escuchando en http://localhost:${PORT}`);
