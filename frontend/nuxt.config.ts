@@ -1,4 +1,6 @@
-// nuxt.config.ts
+/// <reference types="nuxt/schema" />
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
@@ -9,7 +11,7 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
-    '~/plugins/bootstrap.client.ts' // 👈 agrega este plugin
+    '~/plugins/bootstrap.client.ts'
   ],
 
   vite: {

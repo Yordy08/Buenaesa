@@ -1,156 +1,270 @@
 <template>
-  <div class="container my-5">
-    <h1 class="mb-4">Noticias</h1>
+  <div class="container">
+    <h1 class="titulo">Gestión de Noticias</h1>
 
-    <button class="btn btn-success mb-3" @click="abrirModalCrear">Crear Noticia</button>
+  
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Archivo</th>
-          <th>Categoría</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="noticia in noticias" :key="noticia._id">
-          <td>{{ noticia.titulo }}</td>
-          <td>{{ noticia.descripcion }}</td>
-          <td>
-            <img v-if="noticia.archivo" :src="noticia.archivo" alt="Imagen" width="100">
-          </td>
-          <td>{{ noticia.categoria }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" @click="abrirModalEditar(noticia)">Editar</button>
-            <button class="btn btn-danger btn-sm" @click="eliminarNoticia(noticia._id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Formulario de noticias -->
+    <form @submit.prevent="subirNoticia" class="formulario">
+      <input type="text" v-model="titulo" placeholder="Título" required />
+      <textarea v-model="descripcion" placeholder="Descripción" required></textarea>
+      
+      <select v-model="categoria" required>
+        <option value="" disabled selected>Selecciona una categoría</option>
+        <option value="Deportes">Deportes</option>
+        <option value="Tecnología">Tecnología</option>
+        <option value="Política">Política</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Internacional">Internacional</option>
+      </select>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalNoticia" tabindex="-1" aria-labelledby="modalNoticiaLabel" aria-hidden="true" ref="modalRef">
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <input type="file" @change="manejarArchivo" />
 
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalNoticiaLabel">
-              {{ modo === 'crear' ? 'Crear Noticia' : 'Editar Noticia' }}
-            </h5>
-            <button type="button" class="btn-close" @click="cerrarModal" aria-label="Close"></button>
-          </div>
+      <button type="submit" class="boton-enviar">
+        {{ editando ? 'Actualizar Noticia' : 'Crear Noticia' }}
+      </button>
+    </form>
 
-          <div class="modal-body">
-            <form @submit.prevent="guardarNoticia">
-              <div class="mb-3">
-                <label class="form-label">Título</label>
-                <input type="text" class="form-control" v-model="noticiaActual.titulo" required>
-              </div>
+    <br>
 
-              <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea class="form-control" v-model="noticiaActual.descripcion" required></textarea>
-              </div>
+      <!-- Buscador -->
+      <input
+      type="text"
+      v-model="busqueda"
+      placeholder="Buscar noticias..."
+      class="input-busqueda"
+    />
 
-              <div class="mb-3" v-if="modo === 'crear'">
-                <label class="form-label">Archivo (Imagen)</label>
-                <input type="file" class="form-control" @change="cargarArchivo">
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Categoría</label>
-                <input type="text" class="form-control" v-model="noticiaActual.categoria" required>
-              </div>
-
-              <div class="text-end">
-                <button type="button" class="btn btn-secondary me-2" @click="cerrarModal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">
-                  {{ modo === 'crear' ? 'Crear' : 'Actualizar' }}
-                </button>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
+    <!-- Tabla de noticias -->
+    <div class="tabla-container">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="noticia in noticiasFiltradas" :key="noticia._id">
+            <td>{{ noticia.titulo }}</td>
+            <td>{{ noticia.descripcion }}</td>
+            <td>{{ noticia.categoria }}</td>
+            <td>
+              <img v-if="noticia.archivo" :src="noticia.archivo" class="imagen-noticia" />
+            </td>
+            <td>
+              <button class="boton-editar" @click="editarNoticia(noticia)">Editar</button>
+              <button class="boton-eliminar" @click="eliminarNoticia(noticia._id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
+const titulo = ref('')
+const descripcion = ref('')
+const categoria = ref('')
+const archivo = ref(null)
 const noticias = ref([])
-const modo = ref('crear') // 'crear' o 'editar'
-const noticiaActual = ref({})
-const archivoSeleccionado = ref(null)
-const modalNoticia = ref(null)
+const editando = ref(false)
+const noticiaEditando = ref(null)
+const busqueda = ref('') // <- Buscador
+
+const manejarArchivo = (e) => {
+  archivo.value = e.target.files[0]
+}
 
 onMounted(() => {
-  fetchNoticias()
+  cargarNoticias()
 })
 
-async function fetchNoticias() {
-  const res = await fetch('http://localhost:3001/api/noticias')
-  noticias.value = await res.json()
+const cargarNoticias = async () => {
+  try {
+    const data = await $fetch('http://localhost:3001/api/noticias')
+    noticias.value = data
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-function abrirModalCrear() {
-  modo.value = 'crear'
-  noticiaActual.value = { titulo: '', descripcion: '', categoria: '' }
-  archivoSeleccionado.value = null
-  const modal = new bootstrap.Modal(modalNoticia.value)
-  modal.show()
-}
-
-function abrirModalEditar(noticia) {
-  modo.value = 'editar'
-  noticiaActual.value = { ...noticia } // Copiamos
-  archivoSeleccionado.value = null
-  const modal = new bootstrap.Modal(modalNoticia.value)
-  modal.show()
-}
-
-function cerrarModal() {
-  const modal = bootstrap.Modal.getInstance(modalNoticia.value)
-  modal.hide()
-}
-
-function cargarArchivo(event) {
-  archivoSeleccionado.value = event.target.files[0]
-}
-
-async function guardarNoticia() {
+const subirNoticia = async () => {
   const formData = new FormData()
-  formData.append('titulo', noticiaActual.value.titulo)
-  formData.append('descripcion', noticiaActual.value.descripcion)
-  formData.append('categoria', noticiaActual.value.categoria)
-  if (archivoSeleccionado.value) {
-    formData.append('archivo', archivoSeleccionado.value)
+  formData.append('titulo', titulo.value)
+  formData.append('descripcion', descripcion.value)
+  formData.append('categoria', categoria.value)
+  if (archivo.value) {
+    formData.append('archivo', archivo.value)
   }
 
-  if (modo.value === 'crear') {
-    await fetch('http://localhost:3001/api/noticias', {
-      method: 'POST',
-      body: formData
-    })
-  } else {
-    await fetch(`http://localhost:3001/api/noticias/${noticiaActual.value._id}`, {
-      method: 'PUT',
-      body: formData
-    })
+  try {
+    if (editando.value) {
+      await $fetch(`http://localhost:3001/api/noticias/${noticiaEditando.value._id}`, {
+        method: 'PUT',
+        body: formData,
+      })
+      alert('Noticia actualizada correctamente')
+    } else {
+      await $fetch('http://localhost:3001/api/noticias', {
+        method: 'POST',
+        body: formData,
+      })
+      alert('Noticia creada correctamente')
+    }
+    limpiarFormulario()
+    cargarNoticias()
+  } catch (error) {
+    console.error(error)
+    alert('Error al guardar la noticia')
   }
-
-  cerrarModal()
-  fetchNoticias()
 }
 
-async function eliminarNoticia(id) {
+const editarNoticia = (noticia) => {
+  titulo.value = noticia.titulo
+  descripcion.value = noticia.descripcion
+  categoria.value = noticia.categoria
+  noticiaEditando.value = noticia
+  editando.value = true
+}
+
+const eliminarNoticia = async (id) => {
   if (confirm('¿Seguro que quieres eliminar esta noticia?')) {
-    await fetch(`http://localhost:3001/api/noticias/${id}`, { method: 'DELETE' })
-    fetchNoticias()
+    try {
+      await $fetch(`http://localhost:3001/api/noticias/${id}`, {
+        method: 'DELETE',
+      })
+      alert('Noticia eliminada')
+      cargarNoticias()
+    } catch (error) {
+      console.error(error)
+      alert('Error al eliminar la noticia')
+    }
   }
 }
+
+const limpiarFormulario = () => {
+  titulo.value = ''
+  descripcion.value = ''
+  categoria.value = ''
+  archivo.value = null
+  editando.value = false
+  noticiaEditando.value = null
+}
+
+// Computed para filtrar noticias
+const noticiasFiltradas = computed(() => {
+  if (!busqueda.value.trim()) {
+    return noticias.value
+  }
+  return noticias.value.filter((n) =>
+    n.titulo.toLowerCase().includes(busqueda.value.toLowerCase()) ||
+    n.descripcion.toLowerCase().includes(busqueda.value.toLowerCase()) ||
+    n.categoria.toLowerCase().includes(busqueda.value.toLowerCase())
+  )
+})
 </script>
+
+<style scoped>
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.input-busqueda {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.formulario {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.boton-enviar {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.tabla-container {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.tabla th {
+  background-color: #343a40;
+  color: white;
+}
+
+.imagen-noticia {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.boton-editar {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.boton-eliminar {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
