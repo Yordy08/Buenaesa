@@ -1,14 +1,18 @@
 <template>
   <div class="container">
-    <h1 class="titulo">Gestión de Noticias</h1>
+    <!-- Overlay de cargando -->
+    <div v-if="cargando" class="overlay-cargando">
+      <div class="spinner"></div>
+      <p>Creando noticia...</p>
+    </div>
 
-  
+    <h1 class="titulo">Gestión de Noticias</h1>
 
     <!-- Formulario de noticias -->
     <form @submit.prevent="subirNoticia" class="formulario">
       <input type="text" v-model="titulo" placeholder="Título" required />
       <textarea v-model="descripcion" placeholder="Descripción" required></textarea>
-      
+
       <select v-model="categoria" required>
         <option value="" disabled selected>Selecciona una categoría</option>
         <option value="Deportes">Deportes</option>
@@ -20,15 +24,19 @@
 
       <input type="file" @change="manejarArchivo" />
 
-      <button type="submit" class="boton-enviar">
+      <button
+        type="submit"
+        class="boton-enviar"
+        :disabled="cargando"
+      >
         {{ editando ? 'Actualizar Noticia' : 'Crear Noticia' }}
       </button>
     </form>
 
     <br>
 
-      <!-- Buscador -->
-      <input
+    <!-- Buscador -->
+    <input
       type="text"
       v-model="busqueda"
       placeholder="Buscar noticias..."
@@ -67,7 +75,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import Swal from 'sweetalert2'
 
 const titulo = ref('')
 const descripcion = ref('')
@@ -76,7 +85,8 @@ const archivo = ref(null)
 const noticias = ref([])
 const editando = ref(false)
 const noticiaEditando = ref(null)
-const busqueda = ref('') // <- Buscador
+const busqueda = ref('')
+const cargando = ref(false)
 
 const manejarArchivo = (e) => {
   archivo.value = e.target.files[0]
@@ -92,10 +102,12 @@ const cargarNoticias = async () => {
     noticias.value = data
   } catch (error) {
     console.error(error)
+    Swal.fire('Error', 'No se pudieron cargar las noticias', 'error')
   }
 }
 
 const subirNoticia = async () => {
+  cargando.value = true
   const formData = new FormData()
   formData.append('titulo', titulo.value)
   formData.append('descripcion', descripcion.value)
@@ -110,19 +122,21 @@ const subirNoticia = async () => {
         method: 'PUT',
         body: formData,
       })
-      alert('Noticia actualizada correctamente')
+      Swal.fire('Actualizado', 'La noticia se actualizó correctamente', 'success')
     } else {
       await $fetch('http://localhost:3001/api/noticias', {
         method: 'POST',
         body: formData,
       })
-      alert('Noticia creada correctamente')
+      Swal.fire('Creado', 'La noticia se creó correctamente', 'success')
     }
     limpiarFormulario()
     cargarNoticias()
   } catch (error) {
     console.error(error)
-    alert('Error al guardar la noticia')
+    Swal.fire('Error', 'Hubo un error al guardar la noticia', 'error')
+  } finally {
+    cargando.value = false
   }
 }
 
@@ -135,16 +149,24 @@ const editarNoticia = (noticia) => {
 }
 
 const eliminarNoticia = async (id) => {
-  if (confirm('¿Seguro que quieres eliminar esta noticia?')) {
+  const confirmacion = await Swal.fire({
+    title: '¿Seguro que quieres eliminar esta noticia?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  })
+
+  if (confirmacion.isConfirmed) {
     try {
       await $fetch(`http://localhost:3001/api/noticias/${id}`, {
         method: 'DELETE',
       })
-      alert('Noticia eliminada')
+      Swal.fire('Eliminado', 'La noticia ha sido eliminada', 'success')
       cargarNoticias()
     } catch (error) {
       console.error(error)
-      alert('Error al eliminar la noticia')
+      Swal.fire('Error', 'No se pudo eliminar la noticia', 'error')
     }
   }
 }
@@ -154,19 +176,15 @@ const limpiarFormulario = () => {
   descripcion.value = ''
   categoria.value = ''
   archivo.value = null
-  editando.value = false
   noticiaEditando.value = null
+  editando.value = false
 }
 
-// Computed para filtrar noticias
 const noticiasFiltradas = computed(() => {
-  if (!busqueda.value.trim()) {
-    return noticias.value
-  }
-  return noticias.value.filter((n) =>
-    n.titulo.toLowerCase().includes(busqueda.value.toLowerCase()) ||
-    n.descripcion.toLowerCase().includes(busqueda.value.toLowerCase()) ||
-    n.categoria.toLowerCase().includes(busqueda.value.toLowerCase())
+  return noticias.value.filter(noticia =>
+    noticia.titulo.toLowerCase().includes(busqueda.value.toLowerCase()) ||
+    noticia.descripcion.toLowerCase().includes(busqueda.value.toLowerCase()) ||
+    noticia.categoria.toLowerCase().includes(busqueda.value.toLowerCase())
   )
 })
 </script>
@@ -174,55 +192,43 @@ const noticiasFiltradas = computed(() => {
 <style scoped>
 .container {
   max-width: 900px;
-  margin: 0 auto;
+  margin: auto;
   padding: 20px;
 }
 
 .titulo {
-  font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 30px;
-}
-
-.input-busqueda {
-  width: 100%;
-  padding: 10px;
   margin-bottom: 20px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
-
-.formulario {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .formulario input,
 .formulario textarea,
-.formulario select {
+.formulario select,
+.input-busqueda {
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .boton-enviar {
-  background-color: #28a745;
+  width: 100%;
+  background-color: #007bff;
   color: white;
-  padding: 12px;
   border: none;
-  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 1.1rem;
+  transition: background-color 0.3s;
+}
+
+.boton-enviar:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
 .tabla-container {
   overflow-x: auto;
+  margin-top: 20px;
 }
 
 .tabla {
@@ -230,41 +236,67 @@ const noticiasFiltradas = computed(() => {
   border-collapse: collapse;
 }
 
-.tabla th,
-.tabla td {
+.tabla th, .tabla td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
 }
 
-.tabla th {
-  background-color: #343a40;
-  color: white;
-}
-
 .imagen-noticia {
   width: 100px;
   height: auto;
-  border-radius: 8px;
+}
+
+/* Botones de acciones */
+.boton-editar, .boton-eliminar {
+  margin: 2px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 }
 
 .boton-editar {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  margin: 2px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  background-color: #ffc107;
+  color: #000;
 }
 
 .boton-eliminar {
   background-color: #dc3545;
+  color: #fff;
+}
+
+/* Overlay de cargando */
+.overlay-cargando {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
   color: white;
-  padding: 5px 10px;
-  margin: 2px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  font-size: 24px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: girar 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

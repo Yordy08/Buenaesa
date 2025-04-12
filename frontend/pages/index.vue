@@ -13,13 +13,7 @@
               <a class="nav-link active" href="#">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#secciones">Noticias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Tendencias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contacto</a>
+              <a class="nav-link" href="#noticias">Noticias</a>
             </li>
           </ul>
         </div>
@@ -31,115 +25,153 @@
       <div class="container text-center text-white">
         <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">Bienvenido a Buenaesa.com</h1>
         <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Noticias que inspiran.</p>
-        <a href="#secciones" class="btn btn-light btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s">Explorar Noticias</a>
+        <a href="#noticias" class="btn btn-light btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s">Explorar Noticias</a>
       </div>
     </section>
 
-    <!-- SECCIONES -->
-    <section id="secciones" class="py-5">
+    <!-- NOTICIAS -->
+    <section id="noticias" class="py-5">
       <div class="container">
         <h2 class="text-center mb-5">Últimas Noticias</h2>
 
-        <div v-for="(seccion, idx) in secciones" :key="idx" class="mb-5">
-          <h3 class="text-primary mb-3">{{ seccion.nombre }}</h3>
+        <!-- Noticias por categoría -->
+        <div v-for="(noticiasCategoria, categoria) in noticiasPorCategoria" :key="categoria" class="mb-5">
+          <h3 class="mb-3">{{ categoria }}</h3>
 
-          <swiper
-            :slides-per-view="1"
-            :space-between="20"
-            :breakpoints="{
-              640: { slidesPerView: 1 },
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 }
-            }"
-            navigation
-            pagination
-            class="mySwiper"
-          >
-            <swiper-slide v-for="(noticia, idy) in seccion.noticias" :key="idy">
-              <div class="card h-100 shadow-sm">
-                <img :src="noticia.imagen" class="card-img-top" alt="Noticia imagen" style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
+          <!-- Slider -->
+          <div class="slider-container">
+            <div class="slider" :id="`slider-${categoria}`">
+              <div class="card" v-for="noticia in noticiasCategoria" :key="noticia._id">
+                <img :src="noticia.archivo" alt="Imagen" class="card-img-top" v-if="noticia.archivo">
+                <div class="card-body">
                   <h5 class="card-title">{{ noticia.titulo }}</h5>
                   <p class="card-text">{{ noticia.descripcion }}</p>
-                  <a href="#" class="btn btn-primary mt-auto">Leer más</a>
+                  <div class="mt-auto text-center">
+                    <a href="#" class="btn btn-primary">Ver</a>
+                  </div>
                 </div>
               </div>
-            </swiper-slide>
-          </swiper>
+            </div>
 
+            <!-- Flechas -->
+            <div class="slider-buttons">
+              <button @click="scrollLeft(categoria)">‹</button>
+              <button @click="scrollRight(categoria)">›</button>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
-
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { ref, onMounted } from 'vue'
 
-const menuOpen = ref(false);
+const menuOpen = ref(false)
+const noticias = ref([])
+const noticiasPorCategoria = ref({})
+
 const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value;
-};
+  menuOpen.value = !menuOpen.value
+}
 
-const secciones = ref([
-  {
-    nombre: "Emprendimiento",
-    noticias: Array.from({ length: 6 }).map((_, i) => ({
-      titulo: `Emprendimiento ${i + 1}`,
-      descripcion: "Descripción breve del emprendimiento.",
-      imagen: "https://via.placeholder.com/400x200.png?text=Emprendimiento"
-    })),
-  },
-  {
-    nombre: "Ciencia e Innovación",
-    noticias: Array.from({ length: 6 }).map((_, i) => ({
-      titulo: `Ciencia e Innovación ${i + 1}`,
-      descripcion: "Descripción breve de innovación científica.",
-      imagen: "https://via.placeholder.com/400x200.png?text=Ciencia"
-    })),
-  },
-  {
-    nombre: "Cultural",
-    noticias: Array.from({ length: 6 }).map((_, i) => ({
-      titulo: `Cultural ${i + 1}`,
-      descripcion: "Descripción breve sobre cultura.",
-      imagen: "https://via.placeholder.com/400x200.png?text=Cultural"
-    })),
-  },
-  {
-    nombre: "Personajes",
-    noticias: Array.from({ length: 6 }).map((_, i) => ({
-      titulo: `Personaje ${i + 1}`,
-      descripcion: "Descripción breve de personajes destacados.",
-      imagen: "https://via.placeholder.com/400x200.png?text=Personajes"
-    })),
-  },
-  {
-    nombre: "Ambiente, Paz y Convivencia",
-    noticias: Array.from({ length: 6 }).map((_, i) => ({
-      titulo: `Ambiente y Paz ${i + 1}`,
-      descripcion: "Descripción breve sobre ambiente y convivencia.",
-      imagen: "https://via.placeholder.com/400x200.png?text=Ambiente+Paz"
-    })),
+const obtenerNoticias = async () => {
+  try {
+    noticias.value = await $fetch('http://localhost:3001/api/noticias')
+    agruparPorCategoria()
+  } catch (error) {
+    console.error('Error al obtener noticias:', error)
   }
-]);
+}
+
+const agruparPorCategoria = () => {
+  noticiasPorCategoria.value = {}
+
+  noticias.value.forEach((noticia) => {
+    if (!noticiasPorCategoria.value[noticia.categoria]) {
+      noticiasPorCategoria.value[noticia.categoria] = []
+    }
+    noticiasPorCategoria.value[noticia.categoria].push(noticia)
+  })
+}
+
+const scrollLeft = (categoria) => {
+  const slider = document.getElementById(`slider-${categoria}`)
+  slider.scrollLeft -= 300 // Ajusta la cantidad de desplazamiento
+}
+
+const scrollRight = (categoria) => {
+  const slider = document.getElementById(`slider-${categoria}`)
+  slider.scrollLeft += 300 // Ajusta la cantidad de desplazamiento
+}
+
+onMounted(() => {
+  obtenerNoticias()
+})
 </script>
 
 <style scoped>
-/* Puedes agregar estilos personalizados si quieres */
-.swiper {
-  padding-bottom: 40px;
+/* Slider contenedor */
+.slider-container {
+  position: relative;
+  width: 100%; /* Asegurarse de que el contenedor tenga un ancho */
+  height: 100%; /* Asegurar que el contenedor tenga altura */
 }
-.swiper-button-next,
-.swiper-button-prev {
-  color: #0062E6;
+
+/* Slider */
+.slider {
+  display: flex;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  overflow-x: hidden; /* Ocultar la barra de desplazamiento horizontal */
+  overflow-y: hidden; /* Ocultar la barra de desplazamiento vertical */
+  -webkit-overflow-scrolling: touch; /* Para mejorar la experiencia de desplazamiento en iOS */
 }
-.swiper-pagination-bullet-active {
-  background: #0062E6;
+
+/* Card */
+.card {
+  flex: 0 0 auto;
+  width: 250px;
+  margin-right: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+.card-img-top {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Botones de slider */
+.slider-buttons {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+.slider-buttons button {
+  background-color: #0062E6;
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 8px 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.3s;
+}
+.slider-buttons button:hover {
+  background-color: #004bb5;
 }
 </style>
