@@ -1,4 +1,3 @@
-/// <reference types="nuxt/schema" />
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
@@ -11,7 +10,8 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
-    '~/plugins/bootstrap.js'
+    '~/plugins/bootstrap.js',
+    '~/plugins/smartsupp.js'  // Agregar el plugin de SmartSupp
   ],
 
   vite: {
