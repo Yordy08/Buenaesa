@@ -9,7 +9,7 @@ const router = useRouter()
 
 const iniciarSesion = async () => {
   try {
-    const response = await $fetch('http://localhost:3001/usuarios/login', {
+    const response = await $fetch('https://buenaesa-1.onrender.com/usuarios/login', {
       method: 'POST',
       body: {
         email: email.value,

@@ -9,7 +9,7 @@ const router = useRouter()
 
 const registrarUsuario = async () => {
   try {
-    await $fetch('http://localhost:3001/usuarios', {
+    await $fetch('https://buenaesa-1.onrender.com/usuarios', {
       method: 'POST',
       body: {
         nombre: nombre.value,

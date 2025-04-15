@@ -62,7 +62,7 @@
   
   const obtenerNoticias = async () => {
     try {
-      const data = await $fetch('http://localhost:3001/api/noticias') // Ajusta el endpoint si es necesario
+      const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias') // Ajusta el endpoint si es necesario
       console.log('Noticias recibidas:', data)
       noticias.value = data
       noticiasCultura.value = noticias.value.filter(noticia => noticia.categoria === 'Cultura')

@@ -62,7 +62,7 @@
   
   const obtenerNoticias = async () => {
     try {
-      const data = await $fetch('http://localhost:3001/api/noticias') // <-- Asegúrate que esta ruta es la correcta
+      const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias') // <-- Asegúrate que esta ruta es la correcta
       noticias.value = data
   
       noticiasAmbiente.value = noticias.value.filter(

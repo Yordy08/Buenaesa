@@ -104,7 +104,7 @@ onMounted(() => {
 
 const cargarNoticias = async () => {
   try {
-    const data = await $fetch('http://localhost:3001/api/noticias')
+    const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias')
     noticias.value = data
   } catch (error) {
     console.error(error)
@@ -121,16 +121,16 @@ const subirNoticia = async () => {
   if (archivo.value) {
     formData.append('archivo', archivo.value)
   }
-
+ 
   try {
     if (editando.value) {
-      await $fetch(`http://localhost:3001/api/noticias/${noticiaEditando.value._id}`, {
+      await $fetch(`https://buenaesa-1.onrender.com/api/noticias/${noticiaEditando.value._id}`, {
         method: 'PUT',
         body: formData,
       })
       Swal.fire('Actualizado', 'La noticia se actualizó correctamente', 'success')
     } else {
-      await $fetch('http://localhost:3001/api/noticias', {
+      await $fetch('https://buenaesa-1.onrender.com/api/noticias', {
         method: 'POST',
         body: formData,
       })
@@ -165,7 +165,7 @@ const eliminarNoticia = async (id) => {
 
   if (confirmacion.isConfirmed) {
     try {
-      await $fetch(`http://localhost:3001/api/noticias/${id}`, {
+      await $fetch(`https://buenaesa-1.onrender.com/api/noticias/${id}`, {
         method: 'DELETE',
       })
       Swal.fire('Eliminado', 'La noticia ha sido eliminada', 'success')

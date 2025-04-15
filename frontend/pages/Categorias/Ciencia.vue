@@ -62,7 +62,7 @@
   
   const obtenerNoticias = async () => {
     try {
-      const data = await $fetch('http://localhost:3001/api/noticias') // <-- Cambia esto a tu API correcta
+      const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias') // <-- Cambia esto a tu API correcta
       console.log('Noticias cargadas:', data)
   
       noticias.value = data

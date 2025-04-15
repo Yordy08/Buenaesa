@@ -38,7 +38,7 @@
     console.log('Iniciando la carga de la noticia con id:', noticiaId); // Log para depuración
     
     try {
-      const response = await fetch(`http://localhost:3001/api/noticias/${noticiaId}`, {
+      const response = await fetch(`https://buenaesa-1.onrender.com/api/noticias/${noticiaId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

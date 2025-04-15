@@ -63,7 +63,7 @@
   
   const obtenerNoticias = async () => {
     try {
-      const data = await $fetch('http://localhost:3001/api/noticias')
+      const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias')
       noticias.value = data
   
       noticiasPersonajes.value = noticias.value.filter(
