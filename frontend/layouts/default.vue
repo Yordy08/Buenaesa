@@ -8,7 +8,7 @@
      
     <nav2 />
     <hr>
-    <CookieBanner />
+    
     <NuxtPage />
     <br>
     <br>
@@ -21,5 +21,5 @@ import Nav from '~/components/Nav.vue';
 // import Navbar from '~/components/Navbar.vue';
  import Footer from '~/components/Footer.vue';
  import nav2 from '~/components/nav2.vue';
- import CookieBanner from '~/components/CookieBanner.vue';
+
 </script>
