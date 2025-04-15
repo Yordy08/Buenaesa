@@ -13,7 +13,9 @@
     <br>
     <br>
     <Footer />
+    
   </div>
+  
 </template>
 
 <script setup>
@@ -23,3 +25,4 @@ import Nav from '~/components/Nav.vue';
  import nav2 from '~/components/nav2.vue';
 
 </script>
+

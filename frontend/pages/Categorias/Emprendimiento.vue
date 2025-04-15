@@ -36,7 +36,10 @@
 </p>
 
 
-          <a :href="`/Notis/${noticia._id}`" class="btn btn-primary">Leer más</a>
+<div class="mt-auto text-center">
+                    
+                    <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>
+                  </div>
         </div>
       </div>
     </div>

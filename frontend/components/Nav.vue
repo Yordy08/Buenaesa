@@ -1,9 +1,13 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="/">
-        <span style="color: #0FA6A6;">Buena</span><span style="color: #F23568;">e</span><span style="color: #0FA6A6;">sa.co</span>
-      </a>
+      <img src="/images/logo-buenaesa.png" alt="Logo Buenaesa" class="logo-navbar" />
+
+
+
+
+
+
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

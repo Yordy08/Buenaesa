@@ -6,13 +6,18 @@ export default defineNuxtConfig({
 
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
-    'animate.css/animate.min.css'
+    'animate.css/animate.min.css',
+    '@/assets/css/styles.css'  // 👈 aquí se importa tu estilo global
   ],
+  
 
   plugins: [
     '~/plugins/bootstrap.js',
     '~/plugins/smartsupp.js' // Plugin de SmartSupp
   ],
+
+ 
+  
 
   runtimeConfig: {
     public: {

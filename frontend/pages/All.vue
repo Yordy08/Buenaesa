@@ -22,12 +22,10 @@
                 <p class="card-text flex-grow-1">
                   {{ noticia.descripcion.length > 120 ? noticia.descripcion.slice(0, 120) + '...' : noticia.descripcion }}
                 </p>
-                <router-link 
-                  :to="`/Notis/${noticia._id}`" 
-                  class="btn btn-outline-primary mt-auto"
-                >
-                  Leer más
-                </router-link>
+                <div class="mt-auto text-center">
+                    
+                    <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>
+                  </div>
               </div>
             </div>
           </div>

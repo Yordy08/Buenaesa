@@ -91,7 +91,19 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ noticia.titulo.length > 10 ? noticia.descripcion.slice(0, 120) + '...' :noticia.titulo }}</h5>
                   <div class="mt-auto text-center">
-                    
+                    <p 
+  style="display: -webkit-box; 
+         -webkit-line-clamp: 3; 
+         line-clamp: 3;
+         -webkit-box-orient: vertical; 
+         overflow: hidden; 
+         text-overflow: ellipsis; 
+         text-align: justify; 
+         word-spacing: -1px; 
+         letter-spacing: -0.5px;">
+  {{ noticia.descripcion.length > 120 ? noticia.descripcion.slice(0, 120) + '...' : noticia.descripcion }}
+</p>
+
                     <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>
                   </div>
                 </div>
@@ -194,6 +206,7 @@ onMounted(() => {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+
 
 /* Botones de slider */
 .slider-buttons {

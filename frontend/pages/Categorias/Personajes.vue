@@ -38,12 +38,10 @@
   <small class="text-muted">{{ noticia.fecha.slice(0, 10) }}</small>
 </p>
 
-            <router-link 
-              :to="`/Notis/${noticia._id}`" 
-              class="btn btn-primary"
-            >
-              Leer más
-            </router-link>
+<div class="mt-auto text-center">
+                    
+                    <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>
+                  </div>
           </div>
         </div>
       </div>

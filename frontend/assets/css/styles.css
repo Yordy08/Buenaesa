@@ -1,0 +1,191 @@
+/* Estilos Globales */
+:root {
+    --primary-color: #F23568;
+    --secondary-color: #0FA6A6;
+    --background-color: #f7f7f7;
+    --text-color: #333;
+    --headline-font: 'Playfair Display', serif;
+    --body-font: 'Roboto', sans-serif;
+    --shadow-color: rgba(242, 53, 104, 0.3);
+  }
+  
+  body {
+    font-family: var(--body-font);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Tipografía Global */
+  h3, h5 {
+    font-family: var(--headline-font);
+    font-weight: 700;
+    text-align: justify; /* Alineación justificada */
+    word-spacing: -1px;
+    letter-spacing: -0.5px;
+    color: black; /* Títulos en color negro */
+  }
+  
+  p {
+    font-family: var(--body-font);
+    font-size: 1rem;
+    text-align: justify; /* Alineación justificada */
+    word-spacing: -1px;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Carrusel */
+  .news-carousel {
+    background: linear-gradient(to right, #F23568, #0FA6A6);
+    padding: 60px 0;
+    text-align: center;
+  }
+  
+  .carousel-caption p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: white;
+  }
+  
+  .news-description {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .btn-outline-light {
+    border-color: white;
+    color: white;
+  }
+  
+  /* Noticias por Categoría */
+  .news-section {
+    padding: 40px 0;
+  }
+  
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  /* Slider de Noticias */
+  .slider-container {
+    position: relative;
+    display: flex;
+  }
+  
+  .card {
+    flex: 0 0 auto;
+    width: 250px;
+    margin: 15px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 25px var(--shadow-color);
+  }
+  
+  .card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-body p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-color);
+  }
+  
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: black; /* Títulos en color negro */
+    font-size: 1.25rem;
+  }
+  
+  .card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+  }
+  
+  .btn-outline-info {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+  
+  .btn-outline-info:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+
+  /* Estilos para las Imágenes */
+img {
+    width: 100%; /* Asegura que las imágenes se ajusten al contenedor */
+    height: auto; /* Mantiene la proporción original de las imágenes */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+  }
+  
+  /* Efecto al pasar el mouse sobre la imagen */
+  img:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  }
+  
+  /* Estilo específico para imágenes en los cards */
+  .card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover; /* Ajusta la imagen para cubrir todo el área */
+  }
+  
+  /* Imágenes dentro de contenedores de noticias */
+  .news-carousel img {
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Imágenes en el slider de noticias */
+  .slider-container img {
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+  }
+  
+  .slider-container img:hover {
+    transform: scale(1.05);
+  }
+  .logo-navbar {
+    all: unset;           /* ✅ Esto elimina cualquier estilo heredado, incluso del global */
+    display: inline-block;
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+  }
+    
