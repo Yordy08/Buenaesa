@@ -89,7 +89,7 @@
               <div class="card" v-for="noticia in noticiasCategoria" :key="noticia._id">
                 <img :src="noticia.archivo" alt="Imagen" class="card-img-top" v-if="noticia.archivo">
                 <div class="card-body">
-                  <h5 class="card-title">{{ noticia.titulo }}</h5>
+                  <h5 class="card-title">{{ noticia.titulo.length > 10 ? noticia.descripcion.slice(0, 120) + '...' :noticia.titulo }}</h5>
                   <div class="mt-auto text-center">
                     
                     <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>

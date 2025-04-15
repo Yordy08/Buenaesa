@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 
@@ -26,8 +26,19 @@ const iniciarSesion = async () => {
       showConfirmButton: false
     })
 
+    // Guardar usuario en localStorage
     localStorage.setItem('usuario', JSON.stringify(response.usuario))
-    router.push('/')
+
+    // Redirigir a la página de inicio
+    await router.push('/') // Redirigir al inicio
+
+    // Esperar a que Vue haya procesado la redirección antes de actualizar la página
+    await nextTick()
+
+    // Actualizamos el estado de la página
+    // Aquí puedes realizar cualquier acción que requieras para actualizar el estado de la página (si es necesario)
+    // Si no necesitas recargar, puedes hacer cualquier ajuste aquí
+
   } catch (error) {
     console.error(error)
 
@@ -43,10 +54,8 @@ const iniciarSesion = async () => {
 </script>
 
 <template>
- 
   <div class="login-page">
     <div class="form-container animate__animated animate__fadeInDown">
-      
       <h2>Iniciar Sesión</h2>
       <form @submit.prevent="iniciarSesion">
         <div class="input-group">
