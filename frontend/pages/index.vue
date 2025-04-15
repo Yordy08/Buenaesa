@@ -1,43 +1,88 @@
 <template>
   <div>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-      <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="#">Buenaesa<span class="text-dark">.com</span></a>
-        <button class="navbar-toggler" type="button" @click="toggleMenu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div :class="['collapse navbar-collapse', { show: menuOpen }]" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#noticias">Noticias</a>
-            </li>
-          </ul>
+    <!-- CAROUSEL -->
+    <section 
+  class="pt-5" 
+  style="background: linear-gradient(to right, #F23568, #0FA6A6); min-height: 95vh; display: flex; justify-content: center; align-items: center; text-align: center;"
+>
+  <div class="container">
+    <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-inner">
+        <div 
+          v-for="(noticia, index) in primerasNoticias" 
+          :key="noticia._id" 
+          :class="['carousel-item', { active: index === 0 }]"
+        >
+          <img 
+            :src="noticia.archivo" 
+            alt="Imagen" 
+            class="d-block w-100" 
+            v-if="noticia.archivo"
+            style="max-height: 80vh; object-fit: cover; width: 100%;"
+          >
+
+          <!-- TEXTO EN ESCRITORIO (flotando sobre la imagen) -->
+          <div 
+            class="carousel-caption d-none d-md-block p-3 rounded" 
+            style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); border-radius: 1rem;"
+          >
+            <h5 class="fw-bold text-white">{{ noticia.titulo }}</h5>
+            <p class="text-light">
+              {{ noticia.descripcion.length > 230 ? noticia.descripcion.slice(0, 230) + '...' : noticia.descripcion }}
+            </p>
+            <center>
+             <router-link 
+              :to="`/Notis/${noticia._id}`" 
+              class="btn btn-outline-light mt-2"
+            >
+              Ver más
+            </router-link> 
+            </center>
+       
+
+
+          </div>
+
+          <!-- TEXTO EN CELULAR (debajo de la imagen) -->
+          <div class="d-block d-md-none text-center mt-3">
+            <h5 class="fw-bold text-white">{{ noticia.titulo }}</h5>
+            <p class="text-light">
+              {{ noticia.descripcion.length > 230 ? noticia.descripcion.slice(0, 230) + '...' : noticia.descripcion }}
+            </p>
+            <a 
+  :href="`/Notis/${noticia._id}`" 
+  class="btn btn-outline-light mt-2"
+>
+  Ver más
+</a>
+
+          </div>
+
         </div>
       </div>
-    </nav>
 
-    <!-- HERO -->
-    <section class="pt-5" style="background: linear-gradient(to right, #0062E6, #33AEFF); height: 90vh; display: flex; align-items: center;">
-      <div class="container text-center text-white">
-        <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">Bienvenido a Buenaesa.com</h1>
-        <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Noticias que inspiran.</p>
-        <a href="#noticias" class="btn btn-light btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s">Explorar Noticias</a>
-      </div>
-    </section>
+      <!-- Botones de control del carrusel -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
 
     <!-- NOTICIAS -->
     <section id="noticias" class="py-5">
       <div class="container">
-        <h2 class="text-center mb-5">Últimas Noticias</h2>
-
         <!-- Noticias por categoría -->
         <div v-for="(noticiasCategoria, categoria) in noticiasPorCategoria" :key="categoria" class="mb-5">
           <h3 class="mb-3">{{ categoria }}</h3>
-
           <!-- Slider -->
           <div class="slider-container">
             <div class="slider" :id="`slider-${categoria}`">
@@ -45,22 +90,20 @@
                 <img :src="noticia.archivo" alt="Imagen" class="card-img-top" v-if="noticia.archivo">
                 <div class="card-body">
                   <h5 class="card-title">{{ noticia.titulo }}</h5>
-                  <p class="card-text">{{ noticia.descripcion }}</p>
                   <div class="mt-auto text-center">
-                    <a href="#" class="btn btn-primary">Ver</a>
+                    
+                    <a :href="`/Notis/${noticia._id}`" class="btn btn-outline-info">Explorar Noticias</a>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Flechas -->
+            <!-- Botones de flechas para el slider -->
             <div class="slider-buttons">
-              <button @click="scrollLeft(categoria)">‹</button>
-              <button @click="scrollRight(categoria)">›</button>
+              <button @click="scrollLeft(categoria)" class="slider-button-left">‹</button>
+              <button @click="scrollRight(categoria)" class="slider-button-right">›</button>
             </div>
           </div>
         </div>
-
       </div>
     </section>
   </div>
@@ -69,18 +112,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const menuOpen = ref(false)
 const noticias = ref([])
+const primerasNoticias = ref([])
 const noticiasPorCategoria = ref({})
-
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
-}
 
 const obtenerNoticias = async () => {
   try {
     noticias.value = await $fetch('http://localhost:3001/api/noticias')
     agruparPorCategoria()
+    filtrarNoticiasRecientes()
   } catch (error) {
     console.error('Error al obtener noticias:', error)
   }
@@ -88,7 +128,6 @@ const obtenerNoticias = async () => {
 
 const agruparPorCategoria = () => {
   noticiasPorCategoria.value = {}
-
   noticias.value.forEach((noticia) => {
     if (!noticiasPorCategoria.value[noticia.categoria]) {
       noticiasPorCategoria.value[noticia.categoria] = []
@@ -97,14 +136,19 @@ const agruparPorCategoria = () => {
   })
 }
 
+const filtrarNoticiasRecientes = () => {
+  noticias.value.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+  primerasNoticias.value = noticias.value.slice(0, 3)
+}
+
 const scrollLeft = (categoria) => {
   const slider = document.getElementById(`slider-${categoria}`)
-  slider.scrollLeft -= 300 // Ajusta la cantidad de desplazamiento
+  slider.scrollLeft -= 300
 }
 
 const scrollRight = (categoria) => {
   const slider = document.getElementById(`slider-${categoria}`)
-  slider.scrollLeft += 300 // Ajusta la cantidad de desplazamiento
+  slider.scrollLeft += 300
 }
 
 onMounted(() => {
@@ -116,8 +160,8 @@ onMounted(() => {
 /* Slider contenedor */
 .slider-container {
   position: relative;
-  width: 100%; /* Asegurarse de que el contenedor tenga un ancho */
-  height: 100%; /* Asegurar que el contenedor tenga altura */
+  width: 100%;
+  height: 100%;
 }
 
 /* Slider */
@@ -125,9 +169,9 @@ onMounted(() => {
   display: flex;
   scroll-behavior: smooth;
   padding: 10px 0;
-  overflow-x: hidden; /* Ocultar la barra de desplazamiento horizontal */
-  overflow-y: hidden; /* Ocultar la barra de desplazamiento vertical */
-  -webkit-overflow-scrolling: touch; /* Para mejorar la experiencia de desplazamiento en iOS */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Card */
@@ -137,7 +181,7 @@ onMounted(() => {
   margin-right: 20px;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: #0FA6A6;
   transition: transform 0.3s;
 }
 .card:hover {
@@ -160,8 +204,9 @@ onMounted(() => {
   justify-content: space-between;
   transform: translateY(-50%);
 }
-.slider-buttons button {
-  background-color: #0062E6;
+.slider-button-left,
+.slider-button-right {
+  background-color: #0FA6A6;
   border: none;
   color: white;
   font-size: 24px;
@@ -171,7 +216,41 @@ onMounted(() => {
   opacity: 0.7;
   transition: background 0.3s;
 }
-.slider-buttons button:hover {
-  background-color: #004bb5;
+.slider-button-left:hover,
+.slider-button-right:hover {
+  background-color: #F23568;
+}
+
+/* CAROUSEL */
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 15%;
+  left: 5%;
+  right: 5%;
+  background-color: #0fa6a685;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  text-align: left;
+}
+
+.carousel-caption h5 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.carousel-caption p {
+  font-size: 1.2rem;
+  margin: 0;
 }
 </style>

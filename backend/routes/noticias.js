@@ -34,7 +34,22 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 🆕 Actualizar una noticia
+// Obtener una noticia por su id
+router.get('/:id', async (req, res) => {
+  try {
+    const noticia = await Noticia.findById(req.params.id);
+    
+    if (!noticia) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    res.json({ noticia }); // Enviamos la noticia específica
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Actualizar una noticia
 router.put('/:id', upload.single('archivo'), async (req, res) => {
   try {
     const datosActualizados = {
@@ -60,7 +75,7 @@ router.put('/:id', upload.single('archivo'), async (req, res) => {
   }
 });
 
-// 🆕 Eliminar una noticia
+// Eliminar una noticia
 router.delete('/:id', async (req, res) => {
   try {
     const noticia = await Noticia.findByIdAndDelete(req.params.id);

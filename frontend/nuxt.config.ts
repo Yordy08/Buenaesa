@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
-    '~/plugins/bootstrap.client.ts'
+    '~/plugins/bootstrap.js'
   ],
 
   vite: {

@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+
+    <br>
+    <br>
+    <br>
+
     <!-- Overlay de cargando -->
     <div v-if="cargando" class="overlay-cargando">
       <div class="spinner"></div>
@@ -15,11 +20,12 @@
 
       <select v-model="categoria" required>
         <option value="" disabled selected>Selecciona una categoría</option>
-        <option value="Deportes">Deportes</option>
-        <option value="Tecnología">Tecnología</option>
-        <option value="Política">Política</option>
-        <option value="Entretenimiento">Entretenimiento</option>
-        <option value="Internacional">Internacional</option>
+        <option value="Emprendimiento">Emprendimiento</option>
+        <option value="Ciencia e innovación">Ciencia e innovación</option>
+        <option value="Cultura">Cultura</option>
+        <option value="Personajes">Personajes</option>
+        <option value="Ambiente"> Ambiente
+          Paz y Convivencia</option>
       </select>
 
       <input type="file" @change="manejarArchivo" />
