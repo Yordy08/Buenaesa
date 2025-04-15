@@ -50,7 +50,7 @@
   
   const obtenerNoticias = async () => {
     try {
-      const data = await $fetch('http://localhost:3001/api/noticias') // Ajusta la URL si es necesario
+      const data = await $fetch('https://buenaesa-1.onrender.com/api/noticias') // Ajusta la URL si es necesario
       noticias.value = data
   
       // Agrupar noticias por su categoría

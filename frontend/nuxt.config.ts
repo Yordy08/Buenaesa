@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.VITE_API_URL || 'http://localhost:3001'
+      apiBase: process.env.VITE_API_URL || 'https://buenaesa-1.onrender.com/'
     }
   },
 

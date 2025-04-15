@@ -118,7 +118,7 @@ const noticiasPorCategoria = ref({})
 
 const obtenerNoticias = async () => {
   try {
-    noticias.value = await $fetch('https://buenaesa-1.onrender.com/')
+    noticias.value = await $fetch('https://buenaesa-1.onrender.com/api/noticias')
     agruparPorCategoria()
     filtrarNoticiasRecientes()
   } catch (error) {
