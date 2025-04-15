@@ -34,11 +34,10 @@
     word-spacing: -1px;
     letter-spacing: -0.5px;
     color: var(--text-color);
-    display: -webkit-box;
+
     -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     text-overflow: ellipsis;
   }
   
