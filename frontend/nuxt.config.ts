@@ -11,12 +11,12 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/bootstrap.js',
-    '~/plugins/smartsupp.js' // Agregar el plugin de SmartSupp
+    '~/plugins/smartsupp.js' // Plugin de SmartSupp
   ],
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.VITE_API_URL || 'https://buenaesa-1.onrender.com/'
+      apiBase: process.env.API_BASE || 'https://buenaesa-1.onrender.com'
     }
   },
 
