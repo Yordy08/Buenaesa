@@ -118,7 +118,7 @@ const noticiasPorCategoria = ref({})
 
 const obtenerNoticias = async () => {
   try {
-    noticias.value = await $fetch('http://localhost:3001/api/noticias')
+    noticias.value = await $fetch('/api/noticias')
     agruparPorCategoria()
     filtrarNoticiasRecientes()
   } catch (error) {
