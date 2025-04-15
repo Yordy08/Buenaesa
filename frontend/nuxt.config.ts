@@ -11,8 +11,14 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/bootstrap.js',
-    '~/plugins/smartsupp.js'  // Agregar el plugin de SmartSupp
+    '~/plugins/smartsupp.js' // Agregar el plugin de SmartSupp
   ],
+
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.VITE_API_URL || 'http://localhost:3001'
+    }
+  },
 
   vite: {
     define: {
