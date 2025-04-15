@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
     <div class="container">
-      <img src="/images/logo-buenaesa.png" alt="Logo Buenaesa" class="logo-navbar" />
+      <a href="/">
+  <img src="/images/logo-buenaesa.png" alt="Logo Buenaesa" class="logo-navbar" />
+</a>
 
 
 
