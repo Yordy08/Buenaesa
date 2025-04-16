@@ -26,39 +26,47 @@
             <router-link to="/All" class="nav-link menu-link">Actualidad</router-link>
           </li>
 
-  <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownNoticias" role="button"
-    data-bs-toggle="dropdown" aria-expanded="false">
+          <li class="nav-item dropdown">
+  <a 
+    class="nav-link dropdown-toggle" 
+    href="#" 
+    id="navbarDropdownNoticias" 
+    role="button"
+    data-bs-toggle="dropdown" 
+    aria-expanded="false"
+    style="cursor: pointer;"
+  >
     Noticias
   </a>
   <ul class="dropdown-menu" aria-labelledby="navbarDropdownNoticias">
     <li>
-      <router-link to="/Categorias/Ciencia" class="dropdown-item">
+      <router-link to="/Categorias/Ciencia" class="dropdown-item" @click="cerrarMenuManual">
         Ciencia e innovación
       </router-link>
     </li>
     <li>
-      <router-link to="/Categorias/Cultura" class="dropdown-item">
+      <router-link to="/Categorias/Cultura" class="dropdown-item" @click="cerrarMenuManual">
         Cultura
       </router-link>
     </li>
     <li>
-      <router-link to="/Categorias/Personajes" class="dropdown-item">
+      <router-link to="/Categorias/Personajes" class="dropdown-item" @click="cerrarMenuManual">
         Personajes
       </router-link>
     </li>
     <li>
-      <router-link to="/Categorias/Ambiente" class="dropdown-item">
+      <router-link to="/Categorias/Ambiente" class="dropdown-item" @click="cerrarMenuManual">
         Paz & convivencia
       </router-link>
     </li>
     <li>
-      <router-link to="/Categorias/Emprendimiento" class="dropdown-item">
+      <router-link to="/Categorias/Emprendimiento" class="dropdown-item" @click="cerrarMenuManual">
         Emprendimiento
       </router-link>
     </li>
   </ul>
 </li>
+
 
 
           
@@ -69,7 +77,7 @@
             <router-link to="/contac" class="nav-link menu-link">Contacto</router-link>
           </li>
 
-          <li v-if="usuario" class="nav-item dropdown">
+ <li v-if="usuario" class="nav-item dropdown">
   <a 
     class="nav-link dropdown-toggle" 
     href="#" 
