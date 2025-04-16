@@ -10,7 +10,6 @@
 
 
 
-
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -22,8 +21,45 @@
             <router-link to="/" class="nav-link menu-link">Inicio</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/All" class="nav-link menu-link">Noticias</router-link>
+            <router-link to="/All" class="nav-link menu-link">Actualidad</router-link>
           </li>
+
+  <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownNoticias" role="button"
+    data-bs-toggle="dropdown" aria-expanded="false">
+    Noticias
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownNoticias">
+    <li>
+      <router-link to="/Categorias/Ciencia" class="dropdown-item">
+        Ciencia e innovación
+      </router-link>
+    </li>
+    <li>
+      <router-link to="/Categorias/Cultura" class="dropdown-item">
+        Cultura
+      </router-link>
+    </li>
+    <li>
+      <router-link to="/Categorias/Personajes" class="dropdown-item">
+        Personajes
+      </router-link>
+    </li>
+    <li>
+      <router-link to="/Categorias/Ambiente" class="dropdown-item">
+        Paz & convivencia
+      </router-link>
+    </li>
+    <li>
+      <router-link to="/Categorias/Emprendimiento" class="dropdown-item">
+        Emprendimiento
+      </router-link>
+    </li>
+  </ul>
+</li>
+
+
+          
           <li class="nav-item">
             <router-link to="/somos" class="nav-link menu-link">Quienes Somos</router-link>
           </li>
@@ -32,15 +68,39 @@
           </li>
 
           <li v-if="usuario" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Perfil
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" @click="() => { irACreateNoticias(); cerrarMenuManual(); }">Admin</a></li>
-              <li><a class="dropdown-item" @click="() => { cerrarSesion(); cerrarMenuManual(); }">Cerrar sesión</a></li>
-            </ul>
-          </li>
+  <a 
+    class="nav-link dropdown-toggle" 
+    href="#" 
+    id="navbarDropdown" 
+    role="button"
+    data-bs-toggle="dropdown" 
+    aria-expanded="false"
+    style="cursor: pointer;"
+  >
+    Perfil
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <li>
+      <a 
+        class="dropdown-item" 
+        @click="() => { irACreateNoticias(); cerrarMenuManual(); }"
+        style="cursor: pointer;"
+      >
+        Admin
+      </a>
+    </li>
+    <li>
+      <a 
+        class="dropdown-item" 
+        @click="() => { cerrarSesion(); cerrarMenuManual(); }"
+        style="cursor: pointer;"
+      >
+        Cerrar sesión
+      </a>
+    </li>
+  </ul>
+</li>
+
         </ul>
       </div>
     </div>

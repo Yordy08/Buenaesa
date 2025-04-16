@@ -1,7 +1,8 @@
 <template>
     <div class="container mt-5 pt-5">
+     
       <h1 class="mb-4 text-center" style="color: #0FA6A6;">Noticias de Ciencia e Innovación</h1>
-  
+    <hr>
       <!-- Contenedor de tarjetas -->
       <div class="d-flex flex-wrap justify-content-center">
         <div 

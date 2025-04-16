@@ -1,8 +1,16 @@
 <template>
     <div class="container mt-5 pt-5">
       <div v-for="(noticiasCategoria, categoria) in noticiasPorCategoria" :key="categoria" class="mb-5">
-        <h2 class="mb-4 border-bottom pb-2" style="color: #F23568;">{{ categoria }}</h2>
-  
+        <div class="categoria-cinta">
+  <div class="categoria-cinta-contenido">
+    <img 
+      src="/images/rojo.png" 
+      alt="Logo Buenaesa" 
+      class="logo-cinta"
+    />
+    <h3 class="categoria-texto">{{ categoria }}</h3>
+  </div>
+</div>
         <div class="row">
           <div 
             v-for="noticia in noticiasCategoria" 
@@ -73,3 +81,73 @@
   })
   </script>
   
+  <style scoped>
+
+.logo-categoria {
+  width: 20px;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+.animate-category-title:hover .logo-categoria {
+  transform: rotate(-5deg) scale(1.1);
+  filter: drop-shadow(1px 1px 5px rgba(0, 174, 239, 0.6));
+}
+
+.animate-category-title {
+  animation: fadeInLeft 1s ease;
+}
+
+.categoria-texto {
+  font-weight: bold;
+  font-size: 1.75rem;
+  color: #0FA6A6;
+}
+
+.categoria-cinta {
+  background: linear-gradient(to right, #f2356774, #0fa6a63a);
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeInLeft 1s ease;
+}
+
+.categoria-cinta-contenido {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-cinta {
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.categoria-texto {
+ 
+  color:  #0fa6a6;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+/* Animación de entrada */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+</style>

@@ -1,12 +1,12 @@
 <template>
   <div>
     <Nav/>
-    <Navbar />
+   <!--  <Navbar /> -->
     <br>
     <br>
     <hr>
      
-    <nav2 />
+   <!--  <nav2 /> -->
     <hr>
     
     <NuxtPage />
@@ -22,7 +22,7 @@
 import Nav from '~/components/Nav.vue';
 // import Navbar from '~/components/Navbar.vue';
  import Footer from '~/components/Footer.vue';
- import nav2 from '~/components/nav2.vue';
+ /* import nav2 from '~/components/nav2.vue'; */
 
 </script>
 
