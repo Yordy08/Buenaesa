@@ -2,10 +2,14 @@
   <div>
     <!-- CAROUSEL -->
     <section 
-  class="pt-5" 
-  style="background: linear-gradient(to right, #F23568, #0FA6A6); min-height: 95vh; display: flex; justify-content: center; align-items: center; text-align: center;"
->
-  <div class="container">
+    class="pt-5" 
+  style="background: linear-gradient(to right, rgba(242, 53, 104, 0.6), rgba(15, 166, 166, 0.6)); 
+         min-height: 85vh; 
+         display: flex; 
+         justify-content: center; 
+         align-items: center; 
+         text-align: center;">  <div class="container">
+          
     <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
       <div class="carousel-inner">
         <div 
