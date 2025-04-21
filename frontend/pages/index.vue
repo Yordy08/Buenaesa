@@ -3,7 +3,7 @@
     <!-- CAROUSEL -->
     <section 
     class="pt-5" 
-  style="background: linear-gradient(to right, rgba(242, 53, 104, 0.6), rgba(15, 166, 166, 0.6)); 
+  style="background: linear-gradient( rgba(15, 166, 166, 0.6));  
          min-height: 85vh; 
          display: flex; 
          justify-content: center; 
