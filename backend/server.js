@@ -17,7 +17,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://buenaesa.onrender.com',
-    'https://www.buenaesa.co'
+    'https://www.buenaesa.co',
+    'https://buenaesa-yordy08s-projects.vercel.app' // Vercel frontend
   ],
   credentials: true
 }));
