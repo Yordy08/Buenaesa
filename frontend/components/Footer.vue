@@ -7,17 +7,19 @@
         <nuxt-link to="/terminos" class="footer-link">Términos de Servicio</nuxt-link> -->
       </div>
       <div class="social-links">
-  <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" width="24" height="24" />
-  </a>
-  <a href="https://twitter.com" target="_blank" class="social-link" aria-label="Twitter">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="Twitter/X" width="24" height="24" />
-  </a>
-  <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="24" height="24" />
-  </a>
-</div>
-
+        <a href="https://www.facebook.com/share/16SyGJXN87/" target="_blank" class="social-link" aria-label="Facebook">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" width="24" height="24" />
+        </a>
+        <a href="https://x.com/search?q=buenaesa.co&t=dDRRij7KsgYoBHs2QI0HPA&s=08" target="_blank" class="social-link" aria-label="Twitter/X">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="Twitter/X" width="24" height="24" />
+        </a>
+        <a href="https://www.instagram.com/buenaesa.co?igsh=ZWVjdDRzc3YxeHhk" target="_blank" class="social-link" aria-label="Instagram">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="24" height="24" />
+        </a>
+        <a href="https://www.tiktok.com/@buenaesa.co?_t=ZS-8vb1MUipas6&_r=1" target="_blank" class="social-link" aria-label="TikTok">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" width="24" height="24" />
+        </a>
+      </div>
     </div>
   </footer>
 </template>
@@ -62,31 +64,13 @@ export default {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: -50px; /* 👈 súbelos */
+  margin-top: 12px;
 }
 
 .social-link img {
   width: 30px;
   height: 30px;
-  transition: transform 0.3s ease;
-}
-
-.social-link img:hover {
-  transform: scale(1.1);
-}
-.footer-container p {
-  color: white;
-
-}
-.social-links {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.social-link img {
-  filter: brightness(0) invert(1); /* para que sean blancos en fondo oscuro */
+  filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
 
@@ -94,4 +78,7 @@ export default {
   transform: scale(1.2);
 }
 
+.footer-container p {
+  color: white;
+}
 </style>

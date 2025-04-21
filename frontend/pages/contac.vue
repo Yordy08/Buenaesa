@@ -2,8 +2,8 @@
     <div class="contact-wrapper">
       <div class="contact-info">
         <h2>Información de contacto</h2>
-        <p><strong>Correo electrónico:</strong> contacto@tusitio.com</p>
-        <p><strong>Teléfono:</strong> +57 300 123 4567</p>
+        <p><strong>Correo electrónico:</strong>buenaesa.co@gmail.com</p>
+        <!-- <p><strong>Teléfono:</strong> +57 300 123 4567</p> -->
         <p><strong>Dirección:</strong> Montería, Córdoba, Colombia</p>
       </div>
   
